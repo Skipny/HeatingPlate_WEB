@@ -1,0 +1,211 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+
+
+
+body {
+    font-size: 20px;
+    background-image: url(../img/bg.jpg);
+    background-size:cover;
+    
+}
+body p{
+  margin: 0 0 10px 0;
+}
+
+body input {
+    margin:0px 0 30px 0;
+    border-radius: 10px;
+    max-height: 30px;
+}
+body select {
+    width:210px;
+    margin:0 0 40px 0;
+    border-radius: 10px;
+    max-height: 35px;
+}
+.deactive {
+    display: none;
+}
+
+
+
+
+.btn button {
+    border-radius: 20px;
+    text-transform: uppercase;
+    background-color: rgba(128, 183, 179, 0.54);
+    width: 100%;
+    height: 44px;
+    font-size: 14px;
+   
+    color: white;
+    letter-spacing: 2.8px;
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+
+}
+
+.btn button:hover {
+    background-color: rgba(255, 199, 31, 1);
+    background-size: 100% 2px;
+     
+}
+
+.btn btn:focus {
+    background-color: #818181;
+}
+
+a {
+    text-decoration: none;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0% 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 2px;
+    transition: background-size .3s;
+}
+
+header a:hover {
+    background-size: 100% 2px;
+}
+
+.NewInputVar {
+    margin: 0 0 0 40%;
+}
+
+.deactive {
+    animation: ani 1s forwards;
+}
+
+@keyframes ani {
+    0% {
+        transform: translateX(-20%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+.wrap {
+
+    width: 1310px; /*фиксируем ширину обертки*/
+    margin: 0 auto; /*центрируем ее*/
+    height: 800px; /*Задаем высоту обертки*/
+   
+}
+
+.First_block {
+    /*pointer-events:none;*/
+    position:relative;
+    float: left; /*Задаем обтекание*/
+    line-height: 21px; /*Высота строки + верт. центрирования текста*/
+    width: 400px; /*Фиксируем ширину блока*/
+    height: 800px;
+    margin-right: 10px;
+    text-align: center; /*Центрируем текст по горизонтали*/
+    border-radius: 20px ;
+    border: 2px solid rgb(255, 0, 0);
+    background-color:white;
+    
+}
+
+
+.wrap button {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        border-radius: 0 0 15px 15px;
+        text-transform: uppercase;
+        background-color: rgba(128, 183, 179, 0.54);
+        width: 100%;
+        height: 50px;
+        color: white;
+        border: 2px solid rgb(255, 0, 0);
+        letter-spacing: 2.8px;
+        text-decoration: none;
+        background-position: 0% 100%;
+        background-repeat: no-repeat;
+        background-size: 0% 2px;
+        transition: background-size .3s;
+    }
+
+.wrap button:hover {
+    background-color: rgba(255, 199, 31, 1);
+    background-size: 100% 2px;
+}
+
+.wrap btn:focus {
+    background-color: #818181;
+}
+
+
+.second_block {
+    /*pointer-events:none;*/
+    position: relative;
+    float: left; /*Задаем обтекание*/
+    line-height: 21px; /*Высота строки + верт. центрирования текста*/
+    width: 400px; /*Фиксируем ширину блока*/
+    height: 800px;
+    margin-right: 10px;
+    text-align: center; /*Центрируем текст по горизонтали*/
+    border-radius: 20px;
+    border: 2px solid rgb(255, 0, 0);
+    background-color: white;
+}
+.sb_input input{
+    margin:0 0 15px 0;
+}
+.second_block h6 {
+    
+    color: red;
+    font-size:10px;
+   
+    
+}
+
+.result_block {
+    /*pointer-events:none;*/
+    position: relative;
+    float: left; /*Задаем обтекание*/
+    line-height: 21px; /*Высота строки + верт. центрирования текста*/
+    width: 400px; /*Фиксируем ширину блока*/
+    height: 800px;
+    margin-right: 10px;
+    text-align: center; /*Центрируем текст по горизонтали*/
+    border-radius: 20px;
+    border: 2px solid rgb(255, 0, 0);
+    background-color: white;
+}
+.result_block p{
+    margin: 5px 0 10px 0;
+}
+
+.wrap :last-child {
+    margin-right: 0px; /*Убираем поле последнего div-а*/
+}
+
+.Chart {
+    margin:100px 0 0 20%;
+    background-color: white;
+    height: auto;
+    width: 700px;
+}

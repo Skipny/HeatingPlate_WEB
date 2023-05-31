@@ -1,0 +1,173 @@
+﻿@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form action="/Home/Result" method="post">
+    <div class="wrap">
+        <div class="First_block">
+            <p>Выберите материал пластины</p>
+            <div class="optionMaterial">
+                <select class="" onchange="window.location.href = this.options[this.selectedIndex].value">
+                    <option>@Model.Metal?.metal_name</option>
+                    @foreach (var metals in Model.MetalsList)
+                    {
+                        if (@Model.Metal?.metal_name != @metals.metal_name)
+                        {
+                            <option value="/Home/Index/?Id=@metals.metal_id">@metals.metal_name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <p>λ коэффициент температуропроводности, Вт/(м^2·К)</p>
+            <input id="a" name="lambda" value="@Model.Metal?.lambda" />
+            <p>ρ плотность метала, кг/м^3</p>
+            <input name="p" value="@Model.Metal?.density" />
+            <p>с теплоемкость, кДж/(кг·К)</p>
+            <input name="c" value="@Model.Metal?.heat_capacity" />
+            <p>Выбирите тип подогрева:</p>
+            <div class="sb_input">
+                <input name="select1" value="1" type="radio" onChange="Selected(this)"> Односторонний<br />
+                <input name="select1" value="2" type="radio" onChange="Selected(this)"> Двусторонний<br />
+            </div>
+            <p>толщина пластины, м</p>
+            <input id="b" name="l" />
+            <p>α коэфф. теплоотдачи, Вт/(м^2·°C)</p>
+            <input id="c" name="alpha" />
+            <br />
+            <div id="result" class="btn_inpiy"></div>
+            <br />
+            <button type="button" onclick="addition();">Рассчитать число Био</button>
+                
+        </div>
+
+        <div class="second_block">
+            <p>Выбирите тип тела:</p>
+            <div class="sb_input">
+                <input name="select2" value="tonk" type="radio" onChange="Selected(this)"> Тонкое тело<br />
+                <input name="select2" value="kurtki" type="radio" onChange="Selected(this)"> Массивное тело<br />
+            </div>
+            
+            <p>начальная темп пластины, °C</p>
+            <input name="beg_temp" />
+            <p>температура в печи, °C</p>
+            <input name="temp_bake" />
+
+            <div id='tonk' class="deactive">
+                <p>Площадь, м^2 </p>
+                <input name="F" />
+                <p>Время, с</p>
+                <input name="time_tonk" />
+                <p>масса тела, кг</p>
+                <input name="massa" />
+            </div>
+            <div id='kurtki' class="deactive">
+                <p>конец нагрева, °C</p>
+                <input name="temp" />
+                <p>время нагрева, c       <H6>необязательный параметр*</H6></p>
+                
+                <input name="time_mass" />
+                
+                
+                
+                
+            </div>
+            <button type="submit">Рассчитать температуру поверхностей</button>
+        </div>
+
+        <div class="result_block">
+            <p>Результат вычислений:</p>
+             
+              
+             
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+//function Show(a) {
+//        obj=document.getElementById("mydiv");
+//            if (a) obj.style.display="    block";
+//        else obj.style.display="none";
+//}
+    function hideAllBlock() {
+        document.getElementById("tonk").style.display = 'none';
+       
+        document.getElementById("kurtki").style.display = 'none';
+    }
+
+    function Selected(a) {
+        hideAllBlock();
+        document.getElementById(a.value).style.display = 'block';
+    }
+    function addition() {
+        var a = parseFloat(document.getElementById("a").value.replace(',', '.'));
+        var b = parseFloat(document.getElementById("b").value.replace(',', '.'));
+        var c = parseFloat(document.getElementById("c").value);
+        if (isNaN(a) == true) a = 0;
+        if (isNaN(b) == true) b = 0;
+        if (isNaN(c) == true) c = 0;
+        
+        var d = (c * b)/a;
+
+        document.getElementById("result").innerHTML = "Число Био: " + d;
+      }
+</script>
+
+@*<div class="Chart">
+    <canvas id="myChart"></canvas>
+</div>*@
+
+@*<script>
+  function showHide(obj) {
+
+        if (obj == 'rbtnShowButton') {
+            document.getElementById('<%=button1.ClientID %>').style.display = '';
+
+        } else if (obj == 'rbtnHideButton') {
+            document.getElementById('<%=button1.ClientID %>').style.display = 'none';
+        }
+    }
+</script>*@
+
+
+@*<script>
+      const ctx = document.getElementById('myChart');
+
+        const data = {
+            labels: @Json.Serialize(Model.Rows.Select(x=>x.Y).ToList()),
+            datasets: [
+                {
+                    label: 'Температура метала',
+                    data: @Json.Serialize(Model.Rows.Select(x=>x.str6).ToList()),
+                },
+                {
+                    label: 'Температура газа',
+                    data: @Json.Serialize(Model.Rows.Select(x=>x.str7).ToList()),
+                },
+                {
+                    label: 'Разноссть температур',
+                    data: @Json.Serialize(Model.Rows.Select(x=>x.str8).ToList()),
+                }
+            ]
+        };
+
+      const configLine = {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'График'
+          }
+        }
+      },
+    };
+    new Chart(ctx,configLine);
+</script>*@

@@ -1,0 +1,218 @@
+﻿@model HeatingOutput
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<form action="/Home/IndexResult" method="post">
+   
+
+  
+    <div class="wrap">
+        <div class="First_block">
+            <p>λ коэффициент температуропроводности, Вт/(м^2·К)</p>
+            <input name="lambda" value="@Model.lambda" />
+            <p>ρ плотность метала, кг/м^3</p>
+            <input name="p" value="@Model.p" />
+            <p>с теплоемкость, кДж/(кг·К)</p>
+            <input name="c" value="@Model.c" readonly/>
+            <p>длина пластины, м</p>
+            <input  name="l" value="@Model.l" readonly />
+            <p>α коэфф. теплоотдачи, Вт/(м^2·°C)</p>
+            <input name="alpha" value="@Model.alpha" readonly />
+        </div>
+
+        <div class="second_block">
+            
+
+            <p>начальная темп пластины, °C</p>
+            <input name="beg_temp" value="@Model.beg_temp" readonly/>
+            <p>температура в печи, °C</p>
+            <input name="temp_bake" value="@Model.temp_bake" readonly />
+
+            @if (Model.massa >0)
+            {
+                <div >
+                    <p>Площадь, м^2</p>
+                    <input name="F" value="@Model.F" readonly />
+                    <p>Время, с</p>
+                    <input name="time_tonk" value="@Model.time" readonly />
+                    <p>масса тела, кг</p>
+                    <input name="massa" value="@Model.massa" readonly />
+                </div>
+             }
+        else
+        {
+            @if (Model != null)
+            {
+                <div >
+                    <p>конец нагрева, °C</p>
+                    <input name="temp" value="@Model.temp" readonly/>
+                    <p>время нагрева, c       </p>
+                        <input name="time_mass" value="@Math.Round(@Model.time,2)" readonly />
+                </div>
+            }
+        }
+            
+        </div>
+
+        <div class="result_block">
+            <p>Результат вычислений:</p>
+
+            @if (Model != null && Model.O_cr > 0)
+            {
+                <div id="1">
+                    <p>Bi</p>
+                    <input value="@Math.Round(@Model.bi,2)" readonly />
+                    <p>Температура средней плоскости пластины, °C</p>
+                    <input id="b" value="@Math.Round(@Model.temp_cr,2)" readonly/>
+                    <p>Температура верхней поверхности пластины, °C</p>
+                    <input id="a" value="@Math.Round(@Model.temp_v_pow,2)" readonly/>
+                    <p>Температура нижней поверхности пластины, °C</p>
+                    <input id="c" value="@Math.Round(@Model.temp_n_pow,2)" readonly/>
+                </div>
+            }
+            else
+            {
+                @if (Model != null)
+                {
+                    <div id="2">
+                        <p>Исходная температура пластины, °C</p>
+                        <input id="d" value="@Math.Round(@Model.temp_cr,2)" readonly />
+                    </div>                
+                }
+            }
+
+
+        </div>
+    </div>
+
+
+</form>
+
+<script type="text/javascript">
+    //function Show(a) {
+    //        obj=document.getElementById("mydiv");
+    //            if (a) obj.style.display="    block";
+    //        else obj.style.display="none";
+    //}
+    function hideAllBlock() {
+        document.getElementById("tonk").style.display = 'none';
+        document.getElementById("svitshot").style.display = 'none';
+        document.getElementById("kurtki").style.display = 'none';
+    }
+
+    function Selected(a) {
+        hideAllBlock();
+        document.getElementById(a.value).style.display = 'block';
+    }
+    function addition() {
+        var a = parseFloat(document.getElementById("a").value.replace(',', '.'));
+        var b = parseFloat(document.getElementById("b").value.replace(',', '.'));
+        var c = parseFloat(document.getElementById("c").value);
+        if (isNaN(a) == true) a = 0;
+        if (isNaN(b) == true) b = 0;
+        if (isNaN(c) == true) c = 0;
+
+        var d = (c * b) / a;
+
+        document.getElementById("result").innerHTML = d;
+    }
+</script>
+
+    <div class="Chart">
+        <canvas id="myChart"></canvas>
+    </div>
+
+
+
+<script src="/js/chart.js"></script>
+
+@*<script>
+  function showHide(obj) {
+
+        if (obj == 'rbtnShowButton') {
+            document.getElementById('<%=button1.ClientID %>').style.display = '';
+
+        } else if (obj == 'rbtnHideButton') {
+            document.getElementById('<%=button1.ClientID %>').style.display = 'none';
+        }
+    }
+</script>*@
+
+
+<script>
+    if(document.getElementById("2") == null ){
+    var a = parseFloat(document.getElementById("a").value.replace(',', '.'));
+    var b = parseFloat(document.getElementById("b").value.replace(',', '.'));
+    var c = parseFloat(document.getElementById("c").value.replace(',', '.'));
+    
+    
+    const ctx = document.getElementById('myChart');
+
+    const data = {
+            labels: ['Т нач', 'Т в.пов', 'Т ср.п', 'Т н.пов'],
+        datasets: [
+            {
+                label: 'Показания температур',
+                data: [@Model.beg_temp, a, b, c],
+            }
+        ]
+    };
+    const configLine = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'График'
+                }
+            }
+        },
+    };
+   
+
+    new Chart(ctx, configLine);
+    }
+    else {
+        var d = parseFloat(document.getElementById("d").value.replace(',', '.'));
+    
+
+        const ctx = document.getElementById('myChart');
+
+        const data = {
+            labels: ['Т нач', 'Т исх'],
+        datasets: [
+            {
+                label: 'Показания температур',
+                data: [@Model.beg_temp, d],
+            }
+        ]
+    };
+    const configLine = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'График'
+                }
+            }
+        },
+    };
+   
+    new Chart(ctx, configLine);
+    }
+    
+</script>
+
